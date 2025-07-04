@@ -3,7 +3,6 @@
 
 Welcome to the rice field — enjoy my dotfiles 👋
 
----
 
 ## 🖥️ What I'm Using
 
@@ -15,7 +14,6 @@ Welcome to the rice field — enjoy my dotfiles 👋
 - **Thunar** — Lightweight file manager
 - **Rofi** — Application launcher and powermenu
 
----
 
 ## ⚙️ Some Apps in Action
 
@@ -28,7 +26,6 @@ Welcome to the rice field — enjoy my dotfiles 👋
 ### 📝 Neovim Config
 ![nvim](./screenshots/2025-07-04_22-31.jpeg)
 
----
 
 ## 📂 What's Inside This Repo
 
@@ -50,7 +47,6 @@ This repo is managed with [GNU Stow](https://www.gnu.org/software/stow/) for eas
 ├── xprofile/       # .xprofile
 └── README.md       # You're reading this!
 ```
----
 
 ## 🚀 Quick Setup
 
