@@ -24,7 +24,7 @@ Welcome to the rice field — enjoy my dotfiles 👋
 ![rofi](./screenshots/2025-07-04_22-13.jpeg)
 
 ### 📝 Neovim Config
-![nvim](./screenshots/2025-07-04_22-31.jpeg)
+![nvim](./screenshots/2025-07-04_23-28.jpeg)
 
 
 ## 📂 What's Inside This Repo
