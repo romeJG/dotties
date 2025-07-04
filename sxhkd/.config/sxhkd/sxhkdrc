@@ -159,3 +159,9 @@ super + Control_R
 #open bluetooth
 super + b
   blueman-manager
+
+# Flameshot Fullscreen Screenshot to Documents/Screenshots
+Print
+  flameshot full -p ~/Documents/Screenshots
+    # flameshot full -p ~/Documents/Screenshots
+
