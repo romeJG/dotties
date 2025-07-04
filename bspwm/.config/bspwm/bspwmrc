@@ -1,0 +1,33 @@
+#!/bin/sh
+# Launch sxhkd if not already running
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+# Set workspaces
+bspc monitor -d I II III IV
+libinput-gestures-setup start &
+# Window configs
+bspc config border_width         2
+bspc config window_gap          12
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+bspc config top_padding 40
+
+# Auto Start Apps
+sxhkd &
+# picom --config $HOME/.config/picom.conf &
+nitrogen --restore &
+dunst &
+polybar &
+
+# Redshift Time-based Logic
+hour=$(date +"%H")
+
+if [ "$hour" -ge 21 ] || [ "$hour" -lt 6 ]; then
+    redshift -O 5000 &  # You can tweak temp to your liking
+    notify-send "Redshift ON 🌙"
+else
+    redshift -x
+    notify-send "Redshift OFF ☀️"
+fi
+

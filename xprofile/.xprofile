@@ -1,0 +1,5 @@
+(sleep 6 && picom --experimental-backends --config ~/.config/picom/picom.conf) &
+xinput set-prop 11 "libinput Natural Scrolling Enabled" 1
+xinput set-prop 11 "libinput Tapping Enabled" 1
+export GTK_THEME="Layan-Dark-Solid"
+greenclip daemon &
