@@ -4,23 +4,25 @@
 
 # Function to update the prompt dynamically
 
+
+
 update_prompt() {
     local user="👤\[\033[1;37m\]\u"
     local host="\[\033[1;34m\]@\h"
     local time="\[\033[1;33m\](\T)"
     local art="\[\033[0;34m\] ̿̿ ̿’̿’̵͇̿̿ \[\033[1;37m\]з=༼ ▀̿̿Ĺ̯̿̿▀̿ ̿ ༽\[\033[1;30m\]"
     local dir="📁\[\033[1;37m\]\w"
-    local branch="\$(git_branch)"
     local reset="\[\033[0m\]"
 
-    # Calculate the terminal width
+    local branch_name="$(git_branch)"
+    local branch=""
+    if [[ -n $branch_name ]]; then
+        branch="\n\[\033[1;35m\]├─(\[\033[1;34m\]🌳$branch_name\[\033[1;35m\])\[\033[0m\]"
+    fi
+
     local term_width=$(tput cols)
-
-    # Calculate the length of the static parts of the prompt
-    local prompt1_length=$(( ${#user} + ${#host} + ${#time} + 7 ))  # Length of first part of the prompt
-    local prompt2_length=${#art}  # Length of the ASCII art
-
-    # Calculate the length of the fill string
+    local prompt1_length=$(( ${#user} + ${#host} + ${#time} + 7 ))
+    local prompt2_length=${#art}
     local fill_length=$(( (term_width - prompt1_length + 12 ) / 2 ))
     local fill=""
 
@@ -29,9 +31,11 @@ update_prompt() {
     fi
 
     PS1="\n\[\033[1;35m\]┌─(${user}${host}\[\033[1;35m\])${fill}${time}\[\033[1;31m\]>~\[\033[1;33m\]~\[\033[1;35m\]${fill}\[\033[1;31m\]${art}${reset}\n"
-    PS1+="\[\033[1;35m\]├─(${dir}${reset}\[\033[1;35m\]) \[\033[1;35m\]${branch}\n"
+    PS1+="\[\033[1;35m\]├─(${dir}${reset}\[\033[1;35m\]) ${branch}\n"
     PS1+="\[\033[1;35m\]└─\[\033[35m\](\[\033[1;37m\] ._.\[\033[35m\])⊃\[\033[1;37m\]━\[\033[1;33m\]⛥ ⌒*ﾟ.\[\033[1;37m\]❉・\[\033[1;33m\]゜\[\033[1;37m\]・\[\033[1;33m\].\$ ${reset}"
 }
+
+
 
 # Ensure the prompt is updated on terminal resize
 PROMPT_COMMAND='update_prompt'
@@ -42,10 +46,7 @@ shopt -s checkwinsize
 
 
 git_branch() {
-    local branch_name=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    if [[ -n $branch_name ]]; then
-        echo -e "\[\033[1;34m\]├─(🌳$branch_name)\[\033[0m\]"
-    fi
+    git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'
 }
 
 # Initialize the prompt
@@ -171,9 +172,6 @@ weather() {
 #launch neofetch on open
 # neofetch
 
-git_branch() {
-    git branch 2>/dev/null | sed -e '/^[^*]/d' -e ' s/* \(.*\)/\n├─(🌳\1)/'
-}
 
 eval "$(thefuck --alias)"
 
