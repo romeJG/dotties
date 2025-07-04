@@ -150,7 +150,6 @@ alias rustDir='cd Documents/prog/rust'
 #weather
 ## github https://github.com/chubin/wttr.in
 
-alias we="curl wttr.in/Pinagtipunan%20Mandaluyong?1pqnF"
 #function made by me :>
 # @Param 1 City
 #if the city or coordinates are given it will be searched
