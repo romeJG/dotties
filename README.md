@@ -52,7 +52,7 @@ This repo is managed with [GNU Stow](https://www.gnu.org/software/stow/) for eas
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
+git clone https://github.com/romejs/dotfiles.git ~/.dotfiles
 
 # Enter the dotfiles
 cd ~/.dotfiles
