@@ -19,7 +19,8 @@ sxhkd &
 nitrogen --restore &
 dunst &
 polybar &
-
+#Solaar for logitech mx master 3
+nohup solaar --window=hide >/dev/null 2>&1 &
 # Redshift Time-based Logic
 hour=$(date +"%H")
 
