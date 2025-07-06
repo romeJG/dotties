@@ -115,6 +115,9 @@ alias chat-security='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llam
 # AQW Launcher
 alias aqw='cd ~/Documents/aqw && nohup ./Artix_Games_Launcher-x86_64.AppImage &'
 
+# F1 calendar
+alias f1-calendar='/home/rome/Documents/prog/rust/f1/f1_schedule/target/debug/f1_schedule'
+alias f1-standings='/home/rome/Documents/prog/rust/f1/f1_driver_standings/target/release/f1_driver_standings'
 # ===============================
 # 📦 Handy Functions
 # ===============================
@@ -141,6 +144,7 @@ ex() {
 }
 
 weather() {
+    echo "Fetching weather ⛅"
     if [[ -n $1 ]]; then
         curl wttr.in/$1?1pnF
     else
