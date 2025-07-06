@@ -108,8 +108,10 @@ alias libinput-config='vim ~/.dotfiles/libinput/.config/libinput-gestures.conf'
 alias rofi-config='vim ~/.dotfiles/rofi/.config/rofi/config.rasi'
 
 # AI/LLM Shortcuts
-alias chat-deepseek='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/deepseek/deepseek-coder-1.3b-instruct.Q4_K_M.gguf --threads $(nproc)'
-alias chat-mistral='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-instruct-v0.2.Q4_K_M.gguf --color --threads $(nproc)'
+alias chat-deepseek-coder='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/deepseek/deepseek-coder-1.3b-instruct.Q4_K_M.gguf --threads $(nproc)'
+alias chat-deepseek='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/deepseek/deepseek-llm-7b-chat.Q4_K_M.gguf --threads $(nproc)'
+alias chat-mistral-v0-2='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-v0.2.Q4_K_M.gguf --color --threads $(nproc)'
+alias chat-mistral-v0-3='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-v0.3.Q5_K_M.gguf --color --threads $(nproc)'
 alias chat-security='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/security-ai/SecurityLLM.Q4_K_M.gguf --color --ctx-size 2048 --threads $(nproc) -p "I am running on Linux Manjaro. Avoid suggesting Windows tools or commands unless specified."'
 
 # AQW Launcher
