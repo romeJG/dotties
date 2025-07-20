@@ -18,7 +18,7 @@ Welcome to the rice field — enjoy my dotfiles 👋
 ## ⚙️ Some Apps in Action
 
 ### 🗃️ General Setup
-![some apps](./screenshots/2025-07-04_22-03.jpeg)
+![some apps](./screenshots/2025-07-20_23-12_1.jpeg)
 
 ### 🚀 Rofi Launcher
 ![rofi](./screenshots/2025-07-04_22-13.jpeg)
