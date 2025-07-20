@@ -28,7 +28,7 @@ update_prompt() {
     local dir="\w"
 
     # Estimate visible static portion manually
-    local art_len=28
+    local art_len=30
     local static_visible_len=$(( ${#user} + ${#host} + ${#time} + $art_len ))
     local term_width=$(tput cols)
     local fill_visual_width=$(( (term_width - static_visible_len) / 2 ))
