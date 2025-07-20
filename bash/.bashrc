@@ -20,12 +20,41 @@ git_branch() {
 }
 
 update_prompt() {
-    local user="👤\[\033[1;37m\]\u"
-    local host="\[\033[1;34m\]@\h"
-    local time="\[\033[1;33m\](\T)"
-    local art="\[\033[0;34m\] ̿̿ ̿’̿’̵͇̿̿ \[\033[1;37m\]з=༼ ▀̿̿Ĺ̯̿̿▀̿ ̿ ༽\[\033[1;30m\]"
-    local dir="📁\[\033[1;37m\]\w"
-    local reset="\[\033[0m\]"
+    local user="👤\u"
+    local host="@\h"
+    local time="(\T)"
+    local art="\[\033[1;33m\]✦\[\033[1;37m\]━\
+\[\033[1;35m\]⊂\[\033[1;37m\](\[\033[1;35m\]╬\[\033[1;37m\]▔\[\033[1;33m\]皿\[\033[1;37m\]▔\
+\[\033[1;35m\]∩\[\033[1;37m\])\[\033[0m\]"
+
+    local dir="\w"
+
+    # Estimate visible static portion manually
+    local art_len=30
+    local static_visible_len=$(( ${#user} + ${#host} + ${#time} + $art_len ))
+    local term_width=$(tput cols)
+    local fill_visual_width=$(( (term_width - static_visible_len) / 2 ))
+
+    # Simpler particle set, all assumed to be 1 column wide
+    declare -a particle_chars=("." "･" "｡" "☆" "⌒" "❉" "𓂀")
+    local colors=(33 35 36 37 34)
+
+    generate_fill() {
+        local target_width=$1
+        local output=""
+        for ((i = 0; i < target_width; i++)); do
+            local idx=$(( RANDOM % ${#particle_chars[@]} ))
+            local p="${particle_chars[$idx]}"
+            local c="${colors[$RANDOM % ${#colors[@]}]}"
+            output+="\[\033[1;${c}m\]$p"
+        done
+        echo "$output"
+    }
+
+    local fill_left fill_right
+    local center_offset=3
+    fill_left="$(generate_fill "$fill_visual_width - $center_offset")"
+    fill_right="$(generate_fill "$fill_visual_width + $center_offset")"
 
     local branch_name="$(git_branch)"
     local branch=""
@@ -33,18 +62,11 @@ update_prompt() {
         branch="\n\[\033[1;35m\]├─(\[\033[1;32m\]🌳$branch_name\[\033[1;35m\])\[\033[0m\]"
     fi
 
-    local term_width=$(tput cols)
-    local prompt1_length=$(( ${#user} + ${#host} + ${#time} + 7 ))
-    local fill_length=$(( (term_width - prompt1_length + 12 ) / 2 ))
-    local fill=""
-
-    if (( fill_length > 0 )); then
-        fill=$(printf '─%.0s' $(seq 1 $fill_length))
-    fi
-
-    PS1="\n\[\033[1;35m\]┌─(${user}${host}\[\033[1;35m\])${fill}${time}\[\033[1;31m\]>~\[\033[1;33m\]~\[\033[1;35m\]${fill}\[\033[1;31m\]${art}${reset}\n"
-    PS1+="\[\033[1;35m\]├─(${dir}${reset}\[\033[1;35m\]) ${branch}\n"
-    PS1+="\[\033[1;35m\]└─\[\033[35m\](\[\033[1;37m\] ._.\[\033[35m\])⊃\[\033[1;37m\]━\[\033[1;33m\]⛥ ⌒*ﾟ.\[\033[1;37m\]❉・\[\033[1;33m\]゜\[\033[1;37m\]・\[\033[1;33m\].\$ ${reset}"
+    PS1="\n\[\033[1;35m\]┌─(\[\033[1;37m\]$user\[\033[1;34m\]$host\[\033[1;35m\])"
+    PS1+="${fill_left}\[\033[1;33m\]$time${fill_right}\[\033[1;34m\]$art\[\033[0m\]"
+    PS1+="\n\[\033[1;35m\]├─(📁\[\033[1;37m\]$dir\[\033[1;35m\]) ${branch}"
+    PS1+="\n\[\033[1;35m\]└─\[\033[35m\](\[\033[1;37m\] ._.\[\033[35m\])⊃\[\033[1;37m\]━"
+    PS1+="\[\033[1;33m\]⛥ ⌒*ﾟ.\[\033[1;37m\]❉・\[\033[1;33m\]゜\[\033[1;37m\]・\[\033[1;33m\]..\$ \[\033[0m\]"
 }
 
 PROMPT_COMMAND='update_prompt'
@@ -60,6 +82,7 @@ alias lsi='lsd -l'
 alias lsia='lsd -la'
 alias htdocs='cd /opt/lampp/htdocs/ && lsa'
 alias rustDir='cd ~/Documents/prog/rust'
+alias checkdisk=ncdu
 
 # Terminal & System Tools
 alias newt='xfce4-terminal --tab'
@@ -108,12 +131,23 @@ alias libinput-config='vim ~/.dotfiles/libinput/.config/libinput-gestures.conf'
 alias rofi-config='vim ~/.dotfiles/rofi/.config/rofi/config.rasi'
 
 # AI/LLM Shortcuts
-alias chat-deepseek-coder='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/deepseek/deepseek-coder-1.3b-instruct.Q4_K_M.gguf --threads $(nproc)'
 alias chat-deepseek='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/deepseek/deepseek-llm-7b-chat.Q4_K_M.gguf --threads $(nproc)'
-alias chat-mistral-v0-2='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-v0.2.Q4_K_M.gguf --color --threads $(nproc)'
-alias chat-mistral-v0-3='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-v0.3.Q5_K_M.gguf --color --threads $(nproc)'
-alias chat-security='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/security-ai/SecurityLLM.Q4_K_M.gguf --color --ctx-size 2048 --threads $(nproc) -p "I am running on Linux Manjaro. Avoid suggesting Windows tools or commands unless specified."'
+alias chat-mistral='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-v0.3.Q5_K_M.gguf --color --threads $(nproc)'
+alias chat-skinny-mistral='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-v0.3.Q5_K_M.gguf --ctx-size 2048 --threads $(nproc) --color'
 
+llm-summarize() {
+  chat-mistral -p "Summarize the following podcast in bullet points:
+$(cat "$1")"
+}
+
+# Voice to text
+alias whisper-base='~/Documents/Artificial-Inteligence/whisper.cpp/build/bin/whisper-cli -m ~/Documents/Artificial-Inteligence/whisper.cpp/models/ggml-base.bin --threads $(nproc)'
+alias whisper-medium='~/Documents/Artificial-Inteligence/whisper.cpp/build/bin/whisper-cli -m ~/Documents/Artificial-Inteligence/whisper.cpp/models/ggml-medium.bin --threads $(nproc)'
+
+# Audio-to-text processor function
+whisper-proc() {
+  whisper-medium -f "$1" -otxt -of "$2" --language auto
+}
 # AQW Launcher
 alias aqw='cd ~/Documents/aqw && nohup ./Artix_Games_Launcher-x86_64.AppImage &'
 
