@@ -14,6 +14,8 @@ xhost +local:root >/dev/null 2>&1
 # 🎨 Prompt Functions
 # ===============================
 
+# Egyptian Eldritch After-Command Echo
+
 git_branch() {
     git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'
 }
@@ -25,7 +27,19 @@ update_prompt() {
     local art="\[\033[1;33m\]✶\[\033[1;37m\]━\[\033[1;35m\]⊂\[\033[1;37m\](\[\033[1;33m\]𓂀\[\033[1;37m\]_\[\033[1;33m\]𓂀 \[\033[1;37m\]𓊃)\[\033[0m\]"
 
 
-    local dir="\w"
+ 
+if git rev-parse --is-inside-work-tree &>/dev/null; then
+  repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+  repo_name="$(basename "$repo_root")"
+  rel_path="$(git rev-parse --show-prefix 2>/dev/null | sed 's:/$::')" # remove trailing slash
+  if [ -n "$rel_path" ]; then
+    dir="🧬${repo_name}/${rel_path}"
+  else
+    dir="🧬${repo_name}"
+  fi
+else
+  dir="📁\w"
+fi
 
     # Estimate visible static portion manually
     local art_len=30
@@ -52,8 +66,8 @@ update_prompt() {
 
     local fill_left fill_right
     local center_offset=3
-    fill_left="$(generate_fill "$fill_visual_width - $center_offset")"
-    fill_right="$(generate_fill "$fill_visual_width + $center_offset")"
+    fill_left="$(generate_fill $((fill_visual_width - center_offset)))"
+    fill_right="$(generate_fill $((fill_visual_width + center_offset)))"
 
     local branch_name="$(git_branch)"
     local branch=""
@@ -63,7 +77,7 @@ update_prompt() {
 
     PS1="\n\[\033[1;35m\]┌─(\[\033[1;37m\]$user\[\033[1;34m\]$host\[\033[1;35m\])"
     PS1+="${fill_left}\[\033[1;33m\]$time${fill_right}\[\033[1;34m\]$art\[\033[0m\]"
-    PS1+="\n\[\033[1;35m\]├─(📁\[\033[1;37m\]$dir\[\033[1;35m\]) ${branch}"
+    PS1+="\n\[\033[1;35m\]├─(\[\033[1;37m\]$dir\[\033[1;35m\]) ${branch}"
     PS1+="\n\[\033[1;35m\]└─\[\033[35m\](\[\033[1;37m\] ._.\[\033[35m\])⊃\[\033[1;37m\]━"
     PS1+="\[\033[1;33m\]⛥ ⌒*ﾟ.\[\033[1;37m\]❉・\[\033[1;33m\]゜\[\033[1;37m\]・\[\033[1;33m\]..\$ \[\033[0m\]"
 }
@@ -153,6 +167,9 @@ alias aqw='cd ~/Documents/aqw && nohup ./Artix_Games_Launcher-x86_64.AppImage &'
 # F1 calendar
 alias f1-calendar='/home/rome/Documents/prog/rust/f1/f1_schedule/target/debug/f1_schedule'
 alias f1-standings='/home/rome/Documents/prog/rust/f1/f1_driver_standings/target/release/f1_driver_standings'
+
+alias radio-future-bass='mpv https://dfm-futurebass.hostingradio.ru/futurebass96.aacp'
+
 # ===============================
 # 📦 Handy Functions
 # ===============================
@@ -192,8 +209,10 @@ weather() {
 # ===============================
 
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/opt/lampp/bin:$PATH"
 
 eval "$(thefuck --alias)"
+
 
 [ -f ~/.inshellisense/key-bindings.bash ] && source ~/.inshellisense/key-bindings.bash
 
