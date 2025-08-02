@@ -150,11 +150,11 @@ XF86AudioRaiseVolume
 
 # Brightness down - Super + Right Alt
 super + Alt_R
-    light -U 10
+    light -U 5
 
 # Brightness up - Super + Right Ctrl
 super + Control_R
-    light -A 10
+    light -A 5
 
 #open bluetooth
 super + b

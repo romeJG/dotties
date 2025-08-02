@@ -48,7 +48,6 @@ fi
     local fill_visual_width=$(( (term_width - static_visible_len) / 2 ))
 
     # Simpler particle set, all assumed to be 1 column wide
-    declare -a particle_chars=("." "･" "｡" "☆" "⌒" "❉" "𓂀")
     declare -a particle_chars=("." "･" "｡" "☆" "❉" "✦" "𓂀" "𓁹" "✦" "𓅓" "𓃠")
     local colors=(33 35 36 37 34)
 
@@ -144,9 +143,10 @@ alias libinput-config='vim ~/.dotfiles/libinput/.config/libinput-gestures.conf'
 alias rofi-config='vim ~/.dotfiles/rofi/.config/rofi/config.rasi'
 
 # AI/LLM Shortcuts
-alias chat-deepseek='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/deepseek/deepseek-llm-7b-chat.Q4_K_M.gguf --threads $(nproc)'
+alias chat-deepseek='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/deepseek/deepseek-llm-7b-chat.Q4_K_M.gguf --threads $(nproc) --ctx-size 4096'
 alias chat-mistral='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-v0.3.Q5_K_M.gguf --color --threads $(nproc)'
-alias chat-skinny-mistral='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-v0.3.Q5_K_M.gguf --ctx-size 2048 --threads $(nproc) --color'
+alias chat-skinny-mistral='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/mistral/mistral-7b-v0.3.Q5_K_M.gguf --ctx-size 4096 --threads $(nproc) --color'
+alias chat-tiny-llama='~/Documents/Artificial-Inteligence/llama.cpp/build/bin/llama-cli -m ~/models/llama/tiny-llama-1.1B-Chat-Q5_K_M.gguf -i --ctx-size 2048 --threads $(nproc) --color'
 
 llm-summarize() {
   chat-mistral -p "Summarize the following podcast in bullet points:
@@ -168,8 +168,31 @@ alias aqw='cd ~/Documents/aqw && nohup ./Artix_Games_Launcher-x86_64.AppImage &'
 alias f1-calendar='/home/rome/Documents/prog/rust/f1/f1_schedule/target/debug/f1_schedule'
 alias f1-standings='/home/rome/Documents/prog/rust/f1/f1_driver_standings/target/release/f1_driver_standings'
 
-alias radio-future-bass='mpv https://dfm-futurebass.hostingradio.ru/futurebass96.aacp'
+# alias radio-future-bass='mpv https://dfm-futurebass.hostingradio.ru/futurebass96.aacp'
+radio-future-bass() {
+  echo "🔌Connecting to DFM Radio"
+  mpv https://dfm-futurebass.hostingradio.ru/futurebass96.aacp
+}
+radio-lofi() {
+  echo "🔌Connecting LOFI Focus"
+  mpv https://audiotainment-sw.streamabc.net/atsw-lofifocus-mp3-128-3757575 
+}
+alias clam-scan-custom='~/Documents/prog/shell-scripts/clam_scan.sh'
 
+alias wifi-rescan='nmcli device wifi rescan && nmcli device wifi list'
+
+wifi-connect() {
+	if [[ -z "$1" ]]; then
+		echo "Usage: wifi-connect <SSID> [password]"
+		return 1
+	fi
+
+	if [[ -z "$2" ]]; then
+		nmcli device wifi connect "$1"
+	else
+		nmcli device wifi connect "$1" password "$2"
+	fi
+}
 # ===============================
 # 📦 Handy Functions
 # ===============================
@@ -212,6 +235,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/opt/lampp/bin:$PATH"
 
 eval "$(thefuck --alias)"
+
 
 
 [ -f ~/.inshellisense/key-bindings.bash ] && source ~/.inshellisense/key-bindings.bash
